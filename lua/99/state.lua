@@ -2,6 +2,7 @@ local utils = require("99.utils")
 local Agents = require("99.extensions.agents")
 local Extensions = require("99.extensions")
 local Tracking = require("99.state.tracking")
+local Window = require("99.window")
 
 local _99_STATE_FILE = "state"
 local function default_completion()
@@ -96,6 +97,17 @@ end
 --- @return string
 function State:tmp_dir()
   return get_tmp_dir(self)
+end
+
+--- @return boolean
+function State:active()
+  _ = self
+  if Window.has_active_window() then
+    return true
+  end
+
+  local qf = vim.fn.getqflist({ winid = 0 })
+  return qf.winid ~= 0
 end
 
 --- TODO: This is something to understand.  I bet that this is going to need
